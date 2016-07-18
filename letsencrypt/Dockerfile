@@ -18,5 +18,5 @@ ENV PATH="/opt/letsencrypt/bin:$PATH"
 COPY . /opt/letsencrypt/
 RUN ln -fs /opt/letsencrypt/bin/update-certs.sh /etc/periodic/daily/
 
-ENTRYPOINT ["tini", "--"]
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["entrypoint.sh", "crond", "-f"]
