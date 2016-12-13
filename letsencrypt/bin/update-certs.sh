@@ -13,7 +13,7 @@ fi
 
 # Certificates are separated by semi-colon (;). Domains on each certificate are
 # separated by comma (,).
-CERTS=(${DOMAINS//;/ })
+CERTS=(${DOMAINS//;/ } $(<domains))
 
 # Create or renew certificates. Don't exit on error. It's likely that certbot
 # will fail on first run, if HAproxy is not running.

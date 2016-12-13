@@ -4,6 +4,8 @@ RUN apk add --update \
 		bash \
 		certbot \
 		tini \
+		inotify-tools \
+		coreutils \
 	&& rm -rf /var/cache/apk/*
 
 EXPOSE 80
