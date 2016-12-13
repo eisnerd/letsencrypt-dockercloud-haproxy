@@ -28,10 +28,10 @@ gather-domains.sh > domains
     fi
     jobs -p | xargs kill -9 2> /dev/null
     (
-      gather-domains.sh > domains.new
-      ! cmp domains domains.new && cp -v domains.new domains && cat -n domains >&2 && update-certs.sh
-      rm domains.new
       rm -f starved_since
+      new=$(mktemp)
+      gather-domains.sh > $new
+      mv $new domains.new && ! cmp domains domains.new && mv -v domains.new domains 2> /dev/null && cat -n domains >&2 && update-certs.sh
     ) &
   done
 ) &
