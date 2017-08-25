@@ -15,3 +15,5 @@ find /servers -maxdepth 1 -type d|tail -n+2|while read d; do
     scrape_nginx
   )|sort -u|paste -sd,|grep -v ^$
 done
+
+exit 0

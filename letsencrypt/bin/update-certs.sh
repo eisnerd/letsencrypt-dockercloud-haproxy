@@ -15,6 +15,10 @@ fi
 # separated by comma (,).
 CERTS=(${DOMAINS//;/ } $(<domains))
 
+# Protect certbot itself from the watcher's kills
+
+trap "echo Too late to kill $$" INT
+
 # Create or renew certificates. Don't exit on error. It's likely that certbot
 # will fail on first run, if HAproxy is not running.
 for DOMAINS in "${CERTS[@]}"; do

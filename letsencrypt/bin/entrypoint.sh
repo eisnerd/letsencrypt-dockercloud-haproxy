@@ -20,18 +20,18 @@ gather-domains.sh > domains
   max_starvation=60
   rm -f starved_since
   inotifywait -mqre modify /servers | while read EV; do
-    starved_since="$(stat -c %Y starved_since 2> /dev/null)"
+    starved_since="$(stat -c %Y starved_since 2> /dev/null|grep -o [0-9]*)"
     if [ -n "$starved_since" ]; then
       [ $(($(date +%s) - $starved_since)) -gt $max_starvation ] &&
         while [ -e starved_since ]; do echo waiting; sleep 1; done
     else
       touch starved_since
     fi
-    jobs -p | xargs kill -9 2> /dev/null
+    jobs -p | xargs kill -INT 2> /dev/null
     (
-      rm -f starved_since
-      new=$(mktemp)
-      gather-domains.sh > $new
+      rm -f starved_since &&
+      new=$(mktemp) &&
+      gather-domains.sh > $new &&
       mv $new domains.new && ! cmp domains domains.new && mv -v domains.new domains 2> /dev/null && cat -n domains >&2 && update-certs.sh
     ) &
   done
