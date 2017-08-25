@@ -17,6 +17,9 @@ fi
 if [[ -n "$(ls -A $LIVE_CERT_FOLDER)" ]]; then
 	COUNT=0
 	for DIR in "$LIVE_CERT_FOLDER"/*; do
+		if ! openssl x509 -checkend 0 -noout -in "$DIR/fullchain.pem"; then
+			continue
+		fi
 		cat "$DIR/privkey.pem" "$DIR/fullchain.pem" > /certs/letsencrypt$COUNT.pem
 		(( COUNT += 1 ))
 	done
