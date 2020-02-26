@@ -7,7 +7,7 @@ set -e
 # server and use the webroot plugin.
 if [[ -z "$(ps | grep python | grep -v grep)" ]]; then
 	mkdir -p /opt/www
-	(cd /opt/www && python -m SimpleHTTPServer 80) &
+	(cd /opt/www && python3 -m http.server 80) &
 	sleep 1
 fi
 
