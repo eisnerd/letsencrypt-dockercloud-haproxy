@@ -18,6 +18,9 @@ if [[ -n "$(ls -A $LIVE_CERT_FOLDER)" ]]; then
 	rm /certs/letsencrypt*.pem
 	COUNT=0
 	for DIR in "$LIVE_CERT_FOLDER"/*; do
+		if [ ! -d "$DIR" ]; then
+			continue
+		fi
 		if ! openssl x509 -checkend 0 -noout -in "$DIR/fullchain.pem"; then
 			continue
 		fi
